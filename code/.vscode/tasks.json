@@ -10,7 +10,7 @@
 				"-std=c++17",
 				"${file}",
 				"-o",
-				"${workspaceFolder}\\exe\\${fileBasenameNoExtension}.exe"
+				"${fileDirname}\\zzzz.exe"
 			],
 			"options": {
 				"cwd": "D:/MinGW/mingw64/bin"

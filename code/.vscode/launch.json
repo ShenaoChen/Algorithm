@@ -5,11 +5,11 @@
             "name": "g++.exe - 生成和调试活动文件",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}\\exe\\${fileBasenameNoExtension}.exe",
+            "program": "${fileDirname}\\zzzz.exe",
 
             "args": [],
             "stopAtEntry": false,
-            "cwd": "D:/MinGW/mingw64/bin",
+            "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
