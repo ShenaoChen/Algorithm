@@ -7,11 +7,10 @@ const int N = 1e6 + 5;
 int primes[N], cnt;
 bool st[N];
 
-void get_prime() {
-    for (int i = 2; i < N; i++) {
-        if (st[i]) continue;
-        primes[cnt++] = i;
-        for (int j = 0; primes[j] <= N / i; j++) {
+void get_prime(int n) {
+    for (int i = 2; i <= n; i++) {
+        if (!st[i]) primes[cnt++] = i;
+        for (int j = 0; primes[j] <= n / i; j++) {
             st[primes[j] * i] = true;
             if (i % primes[j] == 0) break;
         }
@@ -20,17 +19,15 @@ void get_prime() {
 
 int main() {
     int n;
-    get_prime();
+    get_prime(1e6);
     while (scanf("%d", &n), n) {
-        int l = 1, r = cnt - 1;
-        while (l <= r) {
-            int a = primes[l], b = primes[r];
-            if (a + b == n) {
+        for (int i = 1; i < cnt ; i++) {
+            int a = primes[i];
+            int b = n - a;
+            if (!st[b]) {
                 printf("%d = %d + %d\n", n, a, b);
                 break;
             }
-            if (a + b > n) r--;
-            if (a + b < n) l++;
         }
     }
     return 0;
