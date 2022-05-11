@@ -1,67 +1,150 @@
 #include <iostream>
-#include <cassert>
+#include <exception>
 using namespace std;
-class point {
+class Operation
+{
 public:
-	point() :x(0), y(0) {
-		cout << "调用默认构造函数" << endl;
-	}
+    Operation() = default;
+    virtual ~Operation(){}
+    Operation(double numA, double numB)
+    {
+        this->numA = numA;
+        this->numB = numB;
 
-	point(int x, int y) :x(x), y(y) {
-		cout << "调用构造函数" << endl;
-	}
+    }
+    virtual double getResult()   //虚函数
+    {
+        double result = 0;
+        return result;
+    }
 
-	~point() { cout << "调用析构函数" << endl; }
-	int getX() const { return x; }
-	int getY() const { return y; }
-	void move(int newX, int newY) {
-		x = newX;
-		y = newY;
-	}
-
-private:
-	int x, y;
+protected:
+    double numA = 0;
+    double numB = 0;
 };
-//动态数组类
-class arrayofpoints {
+
+
+class OperationAdd : public Operation
+{
 public:
-	arrayofpoints(int size) :size(size) {
-		points = new point[size];
-	}
+    OperationAdd(double numA, double numB)
+    {
+        this->numA = numA;
+        this->numB = numB;
+    }
+    double getResult() override
+    {
+        double result = 0;
+        result = numA + numB;
+        return result;
 
-	~arrayofpoints() {
-		cout << "deleting..." << endl;
-		// delete []points;
-	}
+    }
+};
 
-	point &element(int index) {
-		assert(index >= 0 && index < size);
-		return points[index];
-	}
+class OperationSub : public Operation
+{
+public:
+    OperationSub(double numA, double numB)
+    {
+        this->numA = numA;
+        this->numB = numB;
+    }
+    double getResult() override
+    {
+        double result = 0;
+        result = numA - numB;
+        return result;
+    }
 
-private:
-	point *points;
-	int size;
+};
+
+class OperationMul : public Operation
+{
+public:
+    OperationMul(double numA, double numB)
+    {
+        this->numA = numA;
+        this->numB = numB;
+    }
+    double getResult() override
+    {
+        double result = 0;
+        result = numA * numB;
+        return result;
+    }
+
+};
+
+class OperationDiv : public Operation
+{
+public:
+    OperationDiv(double numA, double numB)
+    {
+        this->numA = numA;
+        this->numB = numB;
+    }
+    double getResult() override
+    {
+        double result = 0;
+        if (numB == 0)
+            throw exception("分母不为零");
+        result = numA /numB;
+        return result;
+    }
+
+};
+
+
+class OperationFactory
+{
+public:
+    static Operation *createOperate(char operate, double numA, double numB)
+    {
+        Operation *oper = nullptr;
+        switch (operate)
+        {
+        case '+':
+            oper = new OperationAdd(numA,numB);
+            break;
+        case '-':
+            oper = new OperationSub(numA,numB);
+            break;
+        case '*':
+            oper = new OperationMul(numA,numB);
+            break;
+        case '/':
+            oper = new OperationDiv(numA,numB);
+            break;
+        }
+        return oper;
+    }
 };
 
 int main()
 {
-	int count;
-	count = 2;
-	arrayofpoints pointsarray1(count);
-		pointsarray1.element(0).move(5, 10);
-		pointsarray1.element(1).move(15, 20);
+    try{
 
-		arrayofpoints pointsarray2 = pointsarray1;
-		cout << "复制pointsarray1" << endl;
-		cout << "point_0 of array2:" << pointsarray2.element(0).getX()<< "," << pointsarray2.element(0).getY() << endl;
-		cout << "point_1 of array2:" << pointsarray2.element(1).getX()<< "," << pointsarray2.element(1).getY()<< endl;
+        OperationFactory operFact;
+        Operation *oper = nullptr;
+        double numA, numB;
+        cout << "请输入数字A：" << endl;
+        cin >> numA;
+        char sign;
+        cout << "请选择运算符号（+、-、*、/）：" << endl;
+        cin >> sign;
+        cout << "请输入数字B: " << endl;
+        cin >> numB;
 
-		pointsarray1.element(0).move(25, 30);
-		pointsarray1.element(1).move(35,40);
+        oper = operFact.createOperate(sign,numA,numB);
+        double result = oper->getResult();
+        cout << "结果是：" << result << endl;
+        delete Oper;
 
-		cout << "pointsarray1偏移后:" << endl;
-		cout << "point_0 of array2:" << pointsarray2.element(0).getX() << "," << pointsarray2.element(0).getY()<< endl;
-		cout << "point_1 of array2:" << pointsarray2.element(1).getX() << "," << pointsarray2.element(1).getY()<< endl;
-		return 0;
+    }
+    catch (exception &e)
+    {
+        cout << "您的输入有误：" << e.what() << endl;
+
+    }
+    return 0;
 }
