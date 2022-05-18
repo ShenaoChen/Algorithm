@@ -3,6 +3,8 @@
 
 using namespace std;
 
+typedef long long ll;
+
 const int N = 2e5 + 5;
 
 int a[N], tr[N], n;
@@ -27,7 +29,7 @@ int main() {
     int t;
     cin >> t;
     while (t--) {
-        int ans = 0;
+        ll ans = 0;
         cin >> n;
         memset(tr, 0, sizeof(int) * (n + 1));
         for (int i = 0; i < n; i++)

@@ -1,17 +1,18 @@
 #include <iostream>
 #include <vector>
-#include <unordered_map>
+#include <map>
 #include <algorithm>
+#include <ctime>
 
 using namespace std;
 
 void solve() {
-    unordered_map<int, int> m;
+    map<int, int> m;
     vector<int> a;
     int n, k, tmp;
     cin >> n >> k;
     for (int i = 1; i <= n; i++) {
-        cin >> tmp;
+        scanf("%d", &tmp);
         m[tmp]++;
     }
     for (auto [x, cnt] : m)
@@ -23,9 +24,9 @@ void solve() {
         if (a[i + 1] - a[i] != 1) {
             if (r - l + 1 >= mx) {
                 mx = r - l + 1;
-                al = l, ar = r;
-                l = i + 1;
+                al = l, ar = r;  
             }
+            l = i + 1;
         }
         r = i + 1;
     }
@@ -38,6 +39,7 @@ void solve() {
 }
 
 int main() {
+    freopen("in.txt", "r", stdin);
     int t;
     cin >> t;
     while (t--) {

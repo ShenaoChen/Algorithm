@@ -1,150 +1,39 @@
 #include <iostream>
-#include <exception>
+
 using namespace std;
-class Operation
-{
-public:
-    Operation() = default;
-    virtual ~Operation(){}
-    Operation(double numA, double numB)
-    {
-        this->numA = numA;
-        this->numB = numB;
 
-    }
-    virtual double getResult()   //虚函数
-    {
-        double result = 0;
-        return result;
-    }
+typedef long long ll;
 
-protected:
-    double numA = 0;
-    double numB = 0;
-};
+const int N = 1e6 + 5;
 
+int primes[N], phi[N], cnt;
+bool st[N];
 
-class OperationAdd : public Operation
-{
-public:
-    OperationAdd(double numA, double numB)
-    {
-        this->numA = numA;
-        this->numB = numB;
-    }
-    double getResult() override
-    {
-        double result = 0;
-        result = numA + numB;
-        return result;
-
-    }
-};
-
-class OperationSub : public Operation
-{
-public:
-    OperationSub(double numA, double numB)
-    {
-        this->numA = numA;
-        this->numB = numB;
-    }
-    double getResult() override
-    {
-        double result = 0;
-        result = numA - numB;
-        return result;
-    }
-
-};
-
-class OperationMul : public Operation
-{
-public:
-    OperationMul(double numA, double numB)
-    {
-        this->numA = numA;
-        this->numB = numB;
-    }
-    double getResult() override
-    {
-        double result = 0;
-        result = numA * numB;
-        return result;
-    }
-
-};
-
-class OperationDiv : public Operation
-{
-public:
-    OperationDiv(double numA, double numB)
-    {
-        this->numA = numA;
-        this->numB = numB;
-    }
-    double getResult() override
-    {
-        double result = 0;
-        if (numB == 0)
-            throw exception("分母不为零");
-        result = numA /numB;
-        return result;
-    }
-
-};
-
-
-class OperationFactory
-{
-public:
-    static Operation *createOperate(char operate, double numA, double numB)
-    {
-        Operation *oper = nullptr;
-        switch (operate)
-        {
-        case '+':
-            oper = new OperationAdd(numA,numB);
-            break;
-        case '-':
-            oper = new OperationSub(numA,numB);
-            break;
-        case '*':
-            oper = new OperationMul(numA,numB);
-            break;
-        case '/':
-            oper = new OperationDiv(numA,numB);
-            break;
+ll euler(int n){
+    ll ans = 0;
+    phi[1] = 1;
+    for (int i = 2; i <= n; i++) {
+        if (!st[i]) {
+            primes[cnt++] = i;
+            phi[i] = i - 1;
         }
-        return oper;
+        for (int j = 0; primes[j] <= n / i; j++) {
+            st[primes[j] * i] = true;
+            if (i % primes[j] == 0){
+                phi[primes[j] * i] = phi[i] * primes[j];
+                break;
+            }
+            phi[primes[j] * i] = phi[i] * (primes[j] - 1); 
+        }
     }
-};
+    for (int i = 1; i <= n; i++)
+        ans += phi[i];
+    return ans;
+}
 
-int main()
-{
-    try{
-
-        OperationFactory operFact;
-        Operation *oper = nullptr;
-        double numA, numB;
-        cout << "请输入数字A：" << endl;
-        cin >> numA;
-        char sign;
-        cout << "请选择运算符号（+、-、*、/）：" << endl;
-        cin >> sign;
-        cout << "请输入数字B: " << endl;
-        cin >> numB;
-
-        oper = operFact.createOperate(sign,numA,numB);
-        double result = oper->getResult();
-        cout << "结果是：" << result << endl;
-        delete Oper;
-
-    }
-    catch (exception &e)
-    {
-        cout << "您的输入有误：" << e.what() << endl;
-
-    }
+int main() {
+    int n;
+    cin >> n;
+    cout << euler(n) << endl;
     return 0;
 }
