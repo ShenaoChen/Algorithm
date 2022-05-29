@@ -12,7 +12,7 @@ int lowbit(int x) {
 
 void add(int x, int d) {
     for (int i = x; i <= n; i += lowbit(i))
-        tr[i] += d;    
+        tr[i] += d;
 }
 
 int query(int x) {

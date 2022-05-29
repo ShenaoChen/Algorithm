@@ -1,9 +1,8 @@
-#include<iostream>
+#include <iostream>
 
 using namespace std;
 
-int main(){
-
-    printf("hello world!\n");
+int main() {
+    
     return 0;
 }
